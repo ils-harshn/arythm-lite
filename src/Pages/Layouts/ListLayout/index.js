@@ -13,7 +13,7 @@ import {
   InfiniteLoader,
   List,
 } from "react-virtualized";
-// import { get_media_url } from "../../../API/helpers";
+// import { get_image_url } from "../../../API/helpers";
 import Skeleton from "react-loading-skeleton";
 import useSelectedSongStore from "../../../Store/selectedSongStore";
 import {
@@ -23,6 +23,9 @@ import {
 } from "react-icons/tb";
 import { BiFullscreen } from "react-icons/bi";
 import useOptionsStore from "../../../Store/optionsStore";
+import AudioPlayer from "react-h5-audio-player";
+import "../../../css/MusicPlayer.css";
+import { get_song_url } from "../../../API/helpers";
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
@@ -38,7 +41,7 @@ const cache = new CellMeasurerCache({
 //         <Skeleton className="w-16 h-16 absolute top-0 left-0" />
 //       ) : null}
 //       <img
-//         src={get_media_url(path)}
+//         src={get_image_url(path)}
 //         width={64}
 //         height={64}
 //         alt="img"
@@ -248,12 +251,38 @@ const SongsListContainer = () => {
   );
 };
 
+const MusicPlayer = () => {
+  const selected_song = useSelectedSongStore((state) => state.song);
+
+  return (
+    <motion.div
+      initial={{ height: 0, opacity: 0 }}
+      animate={{
+        height: selected_song?.url ? "auto" : 0,
+        opacity: selected_song?.url ? 1 : 0,
+      }}
+      transition={{ duration: 0.3 }}
+      style={{ overflow: "hidden" }}
+    >
+      <AudioPlayer
+        autoPlay
+        src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
+        showJumpControls
+        crossOrigin="*"
+      />
+    </motion.div>
+  );
+};
+
 const ListLayout = () => {
   return (
     <div className="flex w-screen h-screen">
       <SongsListContainer />
-      <div className="flex-grow bg-slate-800">
-        <Outlet />
+      <div className="flex-grow bg-slate-800 flex flex-col">
+        <div className="flex-grow">
+          <Outlet />
+        </div>
+        <MusicPlayer />
       </div>
     </div>
   );
