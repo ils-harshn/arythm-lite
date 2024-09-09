@@ -7,7 +7,6 @@ const Thumbnail = ({ path }) => {
     <div className="w-80 h-80">
       <img
         src={get_image_url(path)}
-        crossOrigin="*"
         className="w-80 h-80 rounded"
         alt="thumb"
       />
