@@ -29,6 +29,8 @@ import AudioPlayer from "react-h5-audio-player";
 import "../../../css/MusicPlayer.css";
 import { get_song_url } from "../../../API/helpers";
 import { MdClose, MdFilterListAlt } from "react-icons/md";
+import useFilterStore from "../../../Store/filterStore";
+import { useDebounce } from "use-debounce";
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
@@ -105,24 +107,24 @@ const SongSkeleton = () => {
 };
 
 const SongsList = () => {
+  const filterData = useFilterStore((state) => state.filterData);
+  const [debouncedFilterData] = useDebounce(filterData, 300);
+
   const {
     data = [],
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useGetSongs(
-    {},
-    {
-      select: (data) => {
-        return data.pages.flat();
-      },
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      staleTime: Infinity,
-      cacheTime: Infinity,
-    }
-  );
+  } = useGetSongs(debouncedFilterData, {
+    select: (data) => {
+      return data.pages.flat();
+    },
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
 
   const isRowLoaded = useCallback(
     ({ index }) => {
@@ -144,7 +146,7 @@ const SongsList = () => {
   if (isLoading) return <SongSkeleton />;
 
   if (isLoading === false && data?.length === 0)
-    return <div className="mt-4 p-4 text-center">No results found.</div>;
+    return <div className="p-4 text-center w-">No results found.</div>;
 
   return (
     <AutoSizer>
@@ -226,10 +228,21 @@ const SongsListCollaperOption = () => {
 
 const FilterOption = () => {
   const toggle = useOptionsStore((state) => state.set_filter_visible);
+  const filterData = useFilterStore((state) => state.filterData);
+  const isFilterApplied =
+    filterData.original_name ||
+    filterData.album_title ||
+    filterData.album_code ||
+    filterData.genre_name ||
+    filterData.artist_name
+      ? true
+      : false;
 
   return (
     <div
-      className="p-1 hover:bg-slate-700 rounded-md duration-300 mb-2"
+      className={`p-1 rounded-md duration-300 mb-2 ${
+        isFilterApplied ? "bg-slate-700" : "hover:bg-slate-700"
+      }`}
       onClick={() => toggle(true)}
     >
       <MdFilterListAlt size={24} />
@@ -285,6 +298,15 @@ const Filter = () => {
   const is_open = useOptionsStore((state) => state.is_filter_visible);
   const toggle = useOptionsStore((state) => state.set_filter_visible);
 
+  const { filterData, setFilterData } = useFilterStore((state) => ({
+    filterData: state.filterData,
+    setFilterData: state.setFilterData,
+  }));
+
+  const handleInputChange = (field) => (event) => {
+    setFilterData({ [field]: event.target.value });
+  };
+
   return (
     <motion.div
       className="absolute left-full bg-slate-800 p-2 rounded-br"
@@ -300,33 +322,39 @@ const Filter = () => {
         </div>
       </div>
       <input
-        data-for="original_name"
+        value={filterData.original_name}
+        onChange={handleInputChange("original_name")}
         placeholder="Enter Song Name"
         className="outline-none border-none bg-slate-800 py-2"
       />
       <input
-        data-for="album_title"
+        value={filterData.album_title}
+        onChange={handleInputChange("album_title")}
         placeholder="Enter Album Name"
         className="outline-none border-none bg-slate-800 py-2"
       />
       <input
-        data-for="album_code"
+        value={filterData.album_code}
+        onChange={handleInputChange("album_code")}
         placeholder="Enter Album Code"
         className="outline-none border-none bg-slate-800 py-2"
       />
       <input
-        data-for="genre_name"
+        value={filterData.genre_name}
+        onChange={handleInputChange("genre_name")}
         placeholder="Enter Genre"
         className="outline-none border-none bg-slate-800 py-2"
       />
       <input
-        data-for="artist_name"
+        value={filterData.artist_name}
+        onChange={handleInputChange("artist_name")}
         placeholder="Enter Artist Name"
         className="outline-none border-none bg-slate-800 py-2"
       />
     </motion.div>
   );
 };
+
 const SongsListContainer = () => {
   const is_open = useOptionsStore((state) => state.is_songslist_visible);
 
