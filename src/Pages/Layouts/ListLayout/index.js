@@ -278,7 +278,7 @@ const ListLayout = () => {
   return (
     <div className="flex w-screen h-screen">
       <SongsListContainer />
-      <div className="flex-grow bg-slate-800 flex flex-col">
+      <div className="flex-grow flex flex-col">
         <div className="flex-grow">
           <Outlet />
         </div>
