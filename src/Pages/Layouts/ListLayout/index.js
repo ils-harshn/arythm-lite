@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   useCallback,
   useEffect,
+  useState,
   // useState
 } from "react";
 import {
@@ -20,12 +21,14 @@ import {
   TbLayoutSidebarLeftCollapseFilled,
   TbLayoutSidebarRightCollapseFilled,
   TbListDetails,
+  TbMusicBolt,
 } from "react-icons/tb";
 import { BiFullscreen } from "react-icons/bi";
 import useOptionsStore from "../../../Store/optionsStore";
 import AudioPlayer from "react-h5-audio-player";
 import "../../../css/MusicPlayer.css";
 import { get_song_url } from "../../../API/helpers";
+import { MdFilterListAlt } from "react-icons/md";
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
@@ -221,12 +224,52 @@ const SongsListCollaperOption = () => {
   );
 };
 
+const FilterOption = () => {
+  return (
+    <div className="p-1 hover:bg-slate-700 rounded-md duration-300 mb-2">
+      <MdFilterListAlt size={24} />
+    </div>
+  );
+};
+
+const HideAll = () => {
+  const [isHidden, setHidden] = useState(false);
+  const set_songslist_visible = useOptionsStore(
+    (state) => state.set_songslist_visible
+  );
+
+  const set_show_music_player = useSelectedSongStore(
+    (state) => state.set_show_music_player
+  );
+
+  const handleHide = () => {
+    setHidden((prev) => {
+      set_songslist_visible(prev);
+      set_show_music_player(prev);
+      return !prev;
+    });
+  };
+
+  return (
+    <div
+      className={`p-1 rounded-md duration-300 mb-2 ${
+        isHidden ? "bg-slate-700" : "hover:bg-slate-700"
+      }`}
+      onClick={handleHide}
+    >
+      <TbMusicBolt size={24} />
+    </div>
+  );
+};
+
 const Options = () => {
   return (
     <div className="p-2 bg-black absolute top-0 left-full rounded-br-lg cursor-pointer">
+      <FilterOption />
       <SongsListCollaperOption />
+      <HideAll />
       <OpenSelectedSongOption />
-      <div className="p-1 hover:bg-slate-700 rounded-md duration-300 mb-2">
+      <div className="p-1 hover:bg-slate-700 rounded-md duration-300">
         <BiFullscreen size={24} />
       </div>
     </div>
@@ -253,13 +296,16 @@ const SongsListContainer = () => {
 
 const MusicPlayer = () => {
   const selected_song = useSelectedSongStore((state) => state.song);
+  const show_music_player = useSelectedSongStore(
+    (state) => state.show_music_player
+  );
 
   return (
     <motion.div
       initial={{ height: 0, opacity: 0 }}
       animate={{
-        height: selected_song?.url ? "auto" : 0,
-        opacity: selected_song?.url ? 1 : 0,
+        height: selected_song?.url && show_music_player ? "auto" : 0,
+        opacity: selected_song?.url && show_music_player ? 1 : 0,
       }}
       transition={{ duration: 0.3 }}
       style={{ overflow: "hidden" }}
