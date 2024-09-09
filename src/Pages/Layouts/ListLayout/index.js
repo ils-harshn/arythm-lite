@@ -28,7 +28,7 @@ import useOptionsStore from "../../../Store/optionsStore";
 import AudioPlayer from "react-h5-audio-player";
 import "../../../css/MusicPlayer.css";
 import { get_song_url } from "../../../API/helpers";
-import { MdFilterListAlt } from "react-icons/md";
+import { MdClose, MdFilterListAlt } from "react-icons/md";
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
@@ -225,8 +225,13 @@ const SongsListCollaperOption = () => {
 };
 
 const FilterOption = () => {
+  const toggle = useOptionsStore((state) => state.set_filter_visible);
+
   return (
-    <div className="p-1 hover:bg-slate-700 rounded-md duration-300 mb-2">
+    <div
+      className="p-1 hover:bg-slate-700 rounded-md duration-300 mb-2"
+      onClick={() => toggle(true)}
+    >
       <MdFilterListAlt size={24} />
     </div>
   );
@@ -276,12 +281,59 @@ const Options = () => {
   );
 };
 
+const Filter = () => {
+  const is_open = useOptionsStore((state) => state.is_filter_visible);
+  const toggle = useOptionsStore((state) => state.set_filter_visible);
+
+  return (
+    <motion.div
+      className="absolute left-full bg-slate-800 p-2 rounded-br"
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: is_open ? "auto" : 0, opacity: is_open ? 1 : 0 }}
+      transition={{ duration: 0.3 }} // Adjust duration as needed
+      style={{ overflow: "hidden" }} // Ensure content doesn't overflow during animation
+    >
+      <div className="mb-2 flex justify-between items-center">
+        <div>Filter Song</div>
+        <div onClick={() => toggle(false)} className="cursor-pointer">
+          <MdClose />
+        </div>
+      </div>
+      <input
+        data-for="original_name"
+        placeholder="Enter Song Name"
+        className="outline-none border-none bg-slate-800 py-2"
+      />
+      <input
+        data-for="album_title"
+        placeholder="Enter Album Name"
+        className="outline-none border-none bg-slate-800 py-2"
+      />
+      <input
+        data-for="album_code"
+        placeholder="Enter Album Code"
+        className="outline-none border-none bg-slate-800 py-2"
+      />
+      <input
+        data-for="genre_name"
+        placeholder="Enter Genre"
+        className="outline-none border-none bg-slate-800 py-2"
+      />
+      <input
+        data-for="artist_name"
+        placeholder="Enter Artist Name"
+        className="outline-none border-none bg-slate-800 py-2"
+      />
+    </motion.div>
+  );
+};
 const SongsListContainer = () => {
   const is_open = useOptionsStore((state) => state.is_songslist_visible);
 
   return (
     <div className="relative">
       <Options />
+      <Filter />
       <motion.div
         className="w-96 h-full"
         initial={{ width: 384 }}
