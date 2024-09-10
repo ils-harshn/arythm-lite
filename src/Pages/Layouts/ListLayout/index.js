@@ -19,7 +19,7 @@ import {
   TbListDetails,
   TbMusicBolt,
 } from "react-icons/tb";
-import { BiFullscreen } from "react-icons/bi";
+import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
 import useOptionsStore from "../../../Store/optionsStore";
 import AudioPlayer from "react-h5-audio-player";
 import "../../../css/MusicPlayer.css";
@@ -255,6 +255,32 @@ const HideAll = () => {
   );
 };
 
+const FullScreenToggleOption = () => {
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const handleFullScreenToggle = () => {
+    if (!isFullScreen) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+    setIsFullScreen(!isFullScreen);
+  };
+
+  return (
+    <div
+      onClick={handleFullScreenToggle}
+      className="p-1 hover:bg-slate-700 rounded-md duration-300 cursor-pointer"
+    >
+      {isFullScreen ? (
+        <BiExitFullscreen size={24} />
+      ) : (
+        <BiFullscreen size={24} />
+      )}
+    </div>
+  );
+};
+
 const Options = () => {
   return (
     <div className="p-2 bg-black absolute top-0 left-full rounded-br-lg cursor-pointer">
@@ -262,9 +288,7 @@ const Options = () => {
       <SongsListCollaperOption />
       <HideAll />
       <OpenSelectedSongOption />
-      <div className="p-1 hover:bg-slate-700 rounded-md duration-300">
-        <BiFullscreen size={24} />
-      </div>
+      <FullScreenToggleOption />
     </div>
   );
 };
