@@ -62,7 +62,11 @@ const Song = ({ data }) => {
   const select_song = useSelectedSongStore((state) => state.set_song);
 
   return (
-    <div className="flex items-center px-2 py-4 w-full cursor-pointer hover:bg-slate-800 duration-300">
+    <div
+      className={`flex items-center px-2 py-4 w-full cursor-pointer duration-300 ${
+        selected_song?._id === data._id ? "bg-slate-900" : "hover:bg-slate-800"
+      }`}
+    >
       {/* <div
         className="w-16 h-16 overflow-hidden relative rounded"
         onClick={() => select_song(data)}
