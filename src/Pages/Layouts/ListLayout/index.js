@@ -288,13 +288,13 @@ const Filter = () => {
 
   return (
     <motion.div
-      className="absolute left-full bg-gray-800 rounded-br p-2 w-56"
+      className="absolute left-full bg-black rounded-br p-2 w-56 border-r border-b border-slate-700"
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: is_open ? "auto" : 0, opacity: is_open ? 1 : 0 }}
       transition={{ duration: 0.3 }}
       style={{ overflow: "hidden" }}
     >
-      <div className="mb-4 flex justify-between items-center border-b pb-2">
+      <div className="mb-4 flex justify-between items-center border-b pb-2 border-slate-700">
         <div>Filter Song</div>
         <div
           onClick={() => toggle(false)}
