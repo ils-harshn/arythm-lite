@@ -1,15 +1,38 @@
 import DocumentMeta from "react-document-meta";
 import useSelectedSongStore from "../../Store/selectedSongStore";
 import { get_image_url } from "../../API/helpers";
+import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 
 const Thumbnail = ({ path }) => {
+  const [isLoaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(false);
+    const img = new Image();
+    img.src = get_image_url(path);
+
+    if (img.complete) {
+      setLoaded(true);
+    } else {
+      img.onload = () => setLoaded(true);
+    }
+  }, [path]);
+
   return (
-    <div className="w-80 h-80">
-      <img
-        src={get_image_url(path)}
-        className="w-80 h-80 rounded"
-        alt="thumb"
-      />
+    <div className="w-80 h-80 relative">
+      {isLoaded ? null : (
+        <div className="absolute top-[-4px] left-0 w-80 h-80">
+          <Skeleton width={320} height={320} className="rounded" />
+        </div>
+      )}
+      <div>
+        <img
+          src={get_image_url(path)}
+          className="w-80 h-80 rounded"
+          alt="thumb"
+        />
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import "react-loading-skeleton/dist/skeleton.css";
+import "./css/Skeleton.css";
 import DocumentMeta from "react-document-meta";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
