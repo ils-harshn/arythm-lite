@@ -288,7 +288,7 @@ const Filter = () => {
 
   return (
     <motion.div
-      className="absolute left-full bg-gray-800 rounded-br p-2 w-56 z-50"
+      className="absolute left-full bg-gray-800 rounded-br p-2 w-56"
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: is_open ? "auto" : 0, opacity: is_open ? 1 : 0 }}
       transition={{ duration: 0.3 }}
