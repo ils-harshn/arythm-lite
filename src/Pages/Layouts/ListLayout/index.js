@@ -107,7 +107,10 @@ const SongsList = () => {
     }
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  if (isLoading) return Array.from({ length: 5 }).map(() => <SongSkeleton />);
+  if (isLoading)
+    return Array.from({ length: 5 }).map((_, index) => (
+      <SongSkeleton key={index} />
+    ));
 
   if (isLoading === false && data?.length === 0)
     return <div className="p-4 text-center">No results found.</div>;
@@ -263,7 +266,7 @@ const FullScreenToggleOption = () => {
 
 const Options = () => {
   return (
-    <div className="p-2 bg-black absolute top-0 left-full rounded-br-lg cursor-pointer">
+    <div className="p-2 bg-black absolute top-0 left-full rounded-br-lg cursor-pointer z-10">
       <SongsListCollaperOption />
       <FilterOption />
       <OpenSelectedSongOption />
@@ -288,7 +291,7 @@ const Filter = () => {
 
   return (
     <motion.div
-      className="absolute left-full bg-black rounded-br p-2 w-56 border-r border-b border-slate-700"
+      className="absolute left-full bg-black rounded-br p-2 w-56 border-r border-b border-slate-700 z-10"
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: is_open ? "auto" : 0, opacity: is_open ? 1 : 0 }}
       transition={{ duration: 0.3 }}

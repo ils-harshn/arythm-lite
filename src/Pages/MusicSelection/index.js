@@ -4,7 +4,7 @@ import { get_image_url } from "../../API/helpers";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 
-const Thumbnail = ({ path }) => {
+export const Thumbnail = ({ path }) => {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const Details = ({ song }) => {
   );
 };
 
-const NoSongSelected = () => {
+export const NoSongSelected = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <div>
