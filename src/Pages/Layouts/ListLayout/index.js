@@ -1,5 +1,5 @@
 import "react-h5-audio-player/lib/styles.css";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
 import { useCallback, useState } from "react";
@@ -472,12 +472,40 @@ const MusicPlayer = () => {
   );
 };
 
+const Navigator = () => {
+  return (
+    <div className="absolute top-0 right-0 w-10 z-10 bg-black px-2 py-1 opacity-0 hover:opacity-100">
+      <NavLink
+        to={"/v1"}
+        className={({ isActive }) =>
+          `block text-center text-xs cursor-pointer ${
+            isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
+          }`
+        }
+      >
+        V1
+      </NavLink>
+      <NavLink
+        to={"/v2"}
+        className={({ isActive }) =>
+          `block text-center text-xs cursor-pointer ${
+            isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
+          }`
+        }
+      >
+        V2
+      </NavLink>
+    </div>
+  );
+};
+
 const ListLayout = () => {
   return (
     <div className="flex w-screen h-screen">
       <SongsListContainer />
       <div className="flex-grow flex flex-col">
-        <div className="flex-grow">
+        <div className="flex-grow relative">
+          <Navigator />
           <Outlet />
         </div>
         <MusicPlayer />
