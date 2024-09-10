@@ -1,3 +1,4 @@
+import 'react-h5-audio-player/lib/styles.css';
 import { Outlet } from "react-router-dom";
 import { useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
