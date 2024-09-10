@@ -404,11 +404,37 @@ const SongsListContainer = () => {
   );
 };
 
+const LineLoader = ({ className = "" }) => {
+  return (
+    <div className={`w-full h-[1px] bg-gray-900 overflow-hidden ${className}`}>
+      <motion.div
+        className="h-full w-full bg-slate-500"
+        initial={{ x: "-100%" }}
+        animate={{ x: "100%" }}
+        transition={{
+          duration: 1.5,
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
+      />
+    </div>
+  );
+};
+
 const MusicPlayer = () => {
   const selected_song = useSelectedSongStore((state) => state.song);
   const show_music_player = useSelectedSongStore(
     (state) => state.show_music_player
   );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLoadStart = () => {
+    setIsLoading(true);
+  };
+
+  const handleCanPlay = () => {
+    setIsLoading(false);
+  };
 
   return (
     <motion.div
@@ -420,11 +446,16 @@ const MusicPlayer = () => {
       transition={{ duration: 0.3 }}
       style={{ overflow: "hidden" }}
     >
-      <AudioPlayer
-        autoPlay
-        src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
-        showJumpControls
-      />
+      <div className="relative">
+        {isLoading ? <LineLoader className="absolute top-0 left-0" /> : null}
+        <AudioPlayer
+          autoPlay
+          src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
+          showJumpControls
+          onLoadStart={handleLoadStart}
+          onCanPlay={handleCanPlay}
+        />
+      </div>
     </motion.div>
   );
 };
