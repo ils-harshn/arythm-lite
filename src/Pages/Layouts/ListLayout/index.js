@@ -384,7 +384,15 @@ const Filter = () => {
 
         <div className="mb-2">
           <button
-            type="submit"
+            onClick={() =>
+              setFilterData({
+                original_name: "",
+                album_title: "",
+                album_code: "",
+                genre_name: "",
+                artist_name: "",
+              })
+            }
             className={`text-sm w-full bg-indigo-600 text-white p-1 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
               filterData.original_name ||
               filterData.album_title ||
