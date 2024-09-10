@@ -264,10 +264,10 @@ const FullScreenToggleOption = () => {
 const Options = () => {
   return (
     <div className="p-2 bg-black absolute top-0 left-full rounded-br-lg cursor-pointer">
-      <FilterOption />
       <SongsListCollaperOption />
-      <HideAll />
+      <FilterOption />
       <OpenSelectedSongOption />
+      <HideAll />
       <FullScreenToggleOption />
     </div>
   );
