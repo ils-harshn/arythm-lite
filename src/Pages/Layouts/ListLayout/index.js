@@ -2,10 +2,9 @@ import "react-h5-audio-player/lib/styles.css";
 import { Outlet } from "react-router-dom";
 import { useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   AutoSizer,
-  CellMeasurer,
   CellMeasurerCache,
   InfiniteLoader,
   List,
@@ -27,11 +26,6 @@ import { get_song_url } from "../../../API/helpers";
 import { MdClose, MdFilterListAlt } from "react-icons/md";
 import useFilterStore from "../../../Store/filterStore";
 import { useDebounce } from "use-debounce";
-
-const cache = new CellMeasurerCache({
-  fixedWidth: true,
-  defaultHeight: 50,
-});
 
 const Song = ({ data }) => {
   const selected_song = useSelectedSongStore((state) => state.song);
@@ -69,13 +63,17 @@ const Song = ({ data }) => {
 
 const SongSkeleton = () => {
   return (
-    <div className="flex items-center px-2 py-4 w-full">
-      <div className="w-16 h-16 overflow-hidden relative rounded">
-        <Skeleton className="w-16 h-16" />
-      </div>
-      <div className="ml-4 w-60">
-        <Skeleton width={240} />
-        <Skeleton width={120} height={10} />
+    <div className="flex items-center px-2 py-4 w-full cursor-pointer">
+      <div className="ml-4 w-52">
+        <div>
+          <Skeleton width={240} />
+        </div>
+        <div className="truncate text-xs text-slate-300">
+          <Skeleton width={120} height={10} />
+        </div>
+        <div className="truncate text-xs">
+          <Skeleton width={160} height={10} />
+        </div>
       </div>
     </div>
   );
@@ -114,14 +112,10 @@ const SongsList = () => {
     }
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  useEffect(() => {
-    cache.clearAll();
-  }, [data.length]);
-
-  if (isLoading) return <SongSkeleton />;
+  if (isLoading) return Array.from({ length: 5 }).map(() => <SongSkeleton />);
 
   if (isLoading === false && data?.length === 0)
-    return <div className="p-4 text-center w-">No results found.</div>;
+    return <div className="p-4 text-center">No results found.</div>;
 
   return (
     <AutoSizer>
@@ -129,39 +123,30 @@ const SongsList = () => {
         <InfiniteLoader
           isRowLoaded={isRowLoaded}
           loadMoreRows={loadMoreRows}
-          rowCount={data.length + (hasNextPage ? 2 : 0)}
+          rowCount={data.length + (hasNextPage ? 5 : 0)}
         >
           {({ onRowsRendered, registerChild }) => (
             <List
               height={height}
               width={width}
-              rowHeight={cache.rowHeight}
-              rowCount={data.length + (isFetchingNextPage ? 1 : 0)}
-              rowRenderer={({ index, key, parent, style }) => {
+              rowHeight={88} // Fixed row height
+              rowCount={data.length + (isFetchingNextPage ? 5 : 0)}
+              rowRenderer={({ index, key, style }) => {
                 if (isFetchingNextPage && index >= data.length) {
                   return (
                     <div key={key} style={style}>
-                      <div className="text-xs text-center">Loading More...</div>
+                      <SongSkeleton />
                     </div>
                   );
                 }
 
                 const song = data[index];
                 if (!song) return null;
+
                 return (
-                  <CellMeasurer
-                    key={key}
-                    cache={cache}
-                    parent={parent}
-                    columnIndex={0}
-                    rowIndex={index}
-                  >
-                    {({ registerChild }) => (
-                      <div ref={registerChild} style={style}>
-                        <Song data={song} />
-                      </div>
-                    )}
-                  </CellMeasurer>
+                  <div key={key} style={style}>
+                    <Song data={song} />
+                  </div>
                 );
               }}
               onRowsRendered={onRowsRendered}
