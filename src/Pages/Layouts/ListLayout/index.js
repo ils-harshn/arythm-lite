@@ -2,12 +2,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { Outlet } from "react-router-dom";
 import { useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
-import {
-  useCallback,
-  useEffect,
-  useState,
-  // useState
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   AutoSizer,
   CellMeasurer,
@@ -15,7 +10,7 @@ import {
   InfiniteLoader,
   List,
 } from "react-virtualized";
-// import { get_image_url } from "../../../API/helpers";
+
 import Skeleton from "react-loading-skeleton";
 import useSelectedSongStore from "../../../Store/selectedSongStore";
 import {
@@ -38,25 +33,6 @@ const cache = new CellMeasurerCache({
   defaultHeight: 50,
 });
 
-// const SongImage = ({ path }) => {
-//   const [isLoaded, setLoaded] = useState(false);
-
-//   return (
-//     <>
-//       {isLoaded === false ? (
-//         <Skeleton className="w-16 h-16 absolute top-0 left-0" />
-//       ) : null}
-//       <img
-//         src={get_image_url(path)}
-//         width={64}
-//         height={64}
-//         alt="img"
-//         onLoad={() => setLoaded(true)}
-//       />
-//     </>
-//   );
-// };
-
 const Song = ({ data }) => {
   const selected_song = useSelectedSongStore((state) => state.song);
   const select_song = useSelectedSongStore((state) => state.set_song);
@@ -67,12 +43,6 @@ const Song = ({ data }) => {
         selected_song?._id === data._id ? "bg-slate-900" : "hover:bg-slate-800"
       }`}
     >
-      {/* <div
-        className="w-16 h-16 overflow-hidden relative rounded"
-        onClick={() => select_song(data)}
-      >
-        <SongImage path={data.album.thumbnail300x300} />
-      </div> */}
       <div className="ml-4 w-52" onClick={() => select_song(data)}>
         <div
           className={`text-base truncate ${
@@ -159,14 +129,14 @@ const SongsList = () => {
         <InfiniteLoader
           isRowLoaded={isRowLoaded}
           loadMoreRows={loadMoreRows}
-          rowCount={data.length + (hasNextPage ? 2 : 0)} // Adjust row count
+          rowCount={data.length + (hasNextPage ? 2 : 0)}
         >
           {({ onRowsRendered, registerChild }) => (
             <List
               height={height}
               width={width}
               rowHeight={cache.rowHeight}
-              rowCount={data.length + (isFetchingNextPage ? 1 : 0)} // Adjust row count
+              rowCount={data.length + (isFetchingNextPage ? 1 : 0)}
               rowRenderer={({ index, key, parent, style }) => {
                 if (isFetchingNextPage && index >= data.length) {
                   return (
@@ -317,8 +287,8 @@ const Filter = () => {
       className="absolute left-full bg-gray-800 rounded-br p-2 w-56 z-50"
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: is_open ? "auto" : 0, opacity: is_open ? 1 : 0 }}
-      transition={{ duration: 0.3 }} // Adjust duration as needed
-      style={{ overflow: "hidden" }} // Ensure content doesn't overflow during animation
+      transition={{ duration: 0.3 }}
+      style={{ overflow: "hidden" }}
     >
       <div className="mb-4 flex justify-between items-center border-b pb-2">
         <div>Filter Song</div>
@@ -425,8 +395,8 @@ const SongsListContainer = () => {
       <motion.div
         className="w-96 h-full"
         initial={{ width: 384 }}
-        animate={{ width: is_open ? 384 : 0 }} // Adjust the width value as needed
-        transition={{ duration: 0.3 }} // Adjust the duration as needed
+        animate={{ width: is_open ? 384 : 0 }}
+        transition={{ duration: 0.3 }}
       >
         <SongsList />
       </motion.div>
