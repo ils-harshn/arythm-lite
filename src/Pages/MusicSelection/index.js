@@ -47,6 +47,33 @@ const Details = ({ song }) => {
   );
 };
 
+const NoSongSelected = () => {
+  return (
+    <div className="flex justify-center items-center h-full">
+      <div>
+        <div className="text-center">
+          <h3 className="text-6xl font-semibold">
+            <span className="text-red-500">AR</span>
+            <span className="text-white">ythm</span>
+            <span
+              className="text-black"
+              style={{
+                textShadow:
+                  "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white",
+              }}
+            >
+              lite.
+            </span>
+          </h3>
+          <p className="mt-4 text-xs">Collection of all time songs</p>
+        </div>
+
+        <hr className="my-10" />
+      </div>
+    </div>
+  );
+};
+
 const MusicSelection = () => {
   const selected_song = useSelectedSongStore((state) => state.song);
 
@@ -59,13 +86,7 @@ const MusicSelection = () => {
   return (
     <DocumentMeta {...meta}>
       <div className="p-12 h-full">
-        {selected_song ? (
-          <Details song={selected_song} />
-        ) : (
-          <div className="flex justify-center items-center h-full">
-            Select a song to play!
-          </div>
-        )}
+        {selected_song ? <Details song={selected_song} /> : <NoSongSelected />}
       </div>
     </DocumentMeta>
   );
