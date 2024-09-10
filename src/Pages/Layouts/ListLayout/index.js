@@ -436,6 +436,10 @@ const MusicPlayer = () => {
     setIsLoading(false);
   };
 
+  const handleWaiting = () => {
+    setIsLoading(true);
+  };
+
   return (
     <motion.div
       initial={{ height: 0, opacity: 0 }}
@@ -454,6 +458,7 @@ const MusicPlayer = () => {
           showJumpControls
           onLoadStart={handleLoadStart}
           onCanPlay={handleCanPlay}
+          onWaiting={handleWaiting}
         />
       </div>
     </motion.div>
