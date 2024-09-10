@@ -85,7 +85,7 @@ const MusicSelection = () => {
 
   return (
     <DocumentMeta {...meta}>
-      <div className="p-12 h-full">
+      <div className="h-full">
         {selected_song ? <Details song={selected_song} /> : <NoSongSelected />}
       </div>
     </DocumentMeta>
