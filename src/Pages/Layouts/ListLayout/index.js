@@ -1,4 +1,4 @@
-import 'react-h5-audio-player/lib/styles.css';
+import "react-h5-audio-player/lib/styles.css";
 import { Outlet } from "react-router-dom";
 import { useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
@@ -310,48 +310,95 @@ const Filter = () => {
 
   return (
     <motion.div
-      className="absolute left-full bg-slate-800 p-2 rounded-br"
+      className="absolute left-full bg-gray-800 rounded-br p-2 w-56 z-50"
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: is_open ? "auto" : 0, opacity: is_open ? 1 : 0 }}
       transition={{ duration: 0.3 }} // Adjust duration as needed
       style={{ overflow: "hidden" }} // Ensure content doesn't overflow during animation
     >
-      <div className="mb-2 flex justify-between items-center">
+      <div className="mb-4 flex justify-between items-center border-b pb-2">
         <div>Filter Song</div>
-        <div onClick={() => toggle(false)} className="cursor-pointer">
-          <MdClose />
+        <div
+          onClick={() => toggle(false)}
+          className="cursor-pointer hover:bg-slate-500 duration-300 rounded p-1"
+        >
+          <MdClose size={16} />
         </div>
       </div>
-      <input
-        value={filterData.original_name}
-        onChange={handleInputChange("original_name")}
-        placeholder="Enter Song Name"
-        className="outline-none border-none bg-slate-800 py-2"
-      />
-      <input
-        value={filterData.album_title}
-        onChange={handleInputChange("album_title")}
-        placeholder="Enter Album Name"
-        className="outline-none border-none bg-slate-800 py-2"
-      />
-      <input
-        value={filterData.album_code}
-        onChange={handleInputChange("album_code")}
-        placeholder="Enter Album Code"
-        className="outline-none border-none bg-slate-800 py-2"
-      />
-      <input
-        value={filterData.genre_name}
-        onChange={handleInputChange("genre_name")}
-        placeholder="Enter Genre"
-        className="outline-none border-none bg-slate-800 py-2"
-      />
-      <input
-        value={filterData.artist_name}
-        onChange={handleInputChange("artist_name")}
-        placeholder="Enter Artist Name"
-        className="outline-none border-none bg-slate-800 py-2"
-      />
+
+      <div>
+        <div className="mb-2">
+          <label className="ml-1 block text-xs font-medium">Song Name</label>
+          <input
+            value={filterData.original_name}
+            onChange={handleInputChange("original_name")}
+            type="text"
+            className="p-1 mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-200 placeholder-gray-400 sm:text-sm"
+            placeholder="Enter song name"
+          />
+        </div>
+
+        <div className="mb-2">
+          <label className="ml-1 block text-xs font-medium">Album Name</label>
+          <input
+            value={filterData.album_title}
+            onChange={handleInputChange("album_title")}
+            type="text"
+            className="p-1 mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-200 placeholder-gray-400 sm:text-sm"
+            placeholder="Enter album name"
+          />
+        </div>
+
+        <div className="mb-2">
+          <label className="ml-1 block text-xs font-medium">Genre Name</label>
+          <input
+            value={filterData.genre_name}
+            onChange={handleInputChange("genre_name")}
+            type="text"
+            className="p-1 mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-200 placeholder-gray-400 sm:text-sm"
+            placeholder="Enter genre name"
+          />
+        </div>
+
+        <div className="mb-2">
+          <label className="ml-1 block text-xs font-medium">Artist Name</label>
+          <input
+            value={filterData.artist_name}
+            onChange={handleInputChange("artist_name")}
+            type="text"
+            className="p-1 mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-200 placeholder-gray-400 sm:text-sm"
+            placeholder="Enter artist name"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="ml-1 block text-xs font-medium">Album Code</label>
+          <input
+            value={filterData.album_code}
+            onChange={handleInputChange("album_code")}
+            type="text"
+            className="p-1 mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-200 placeholder-gray-400 sm:text-sm"
+            placeholder="Enter album code"
+          />
+        </div>
+
+        <div className="mb-2">
+          <button
+            type="submit"
+            className={`text-sm w-full bg-indigo-600 text-white p-1 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+              filterData.original_name ||
+              filterData.album_title ||
+              filterData.album_code ||
+              filterData.genre_name ||
+              filterData.artist_name
+                ? ""
+                : "disabled opacity-50"
+            }`}
+          >
+            Clear All
+          </button>
+        </div>
+      </div>
     </motion.div>
   );
 };
