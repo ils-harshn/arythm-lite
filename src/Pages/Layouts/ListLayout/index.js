@@ -22,6 +22,7 @@ import { MdClose, MdFilterListAlt } from "react-icons/md";
 import useFilterStore from "../../../Store/filterStore";
 import { useDebounce } from "use-debounce";
 import { useGetStatus } from "../../../API/status/queryHooks";
+import { IoMdRepeat, IoMdShuffle } from "react-icons/io";
 
 const Song = ({ data }) => {
   const selected_song = useSelectedSongStore((state) => state.song);
@@ -429,6 +430,22 @@ const LineLoader = ({ className = "" }) => {
   );
 };
 
+const RandomButton = () => {
+  return (
+    <button key="random" className="p-2" aria-label="Random">
+      <IoMdShuffle size={20} />
+    </button>
+  );
+};
+
+const RepeatButton = () => {
+  return (
+    <button key="repeat" className="p-2" aria-label="Repeat">
+      <IoMdRepeat size={24} />
+    </button>
+  );
+};
+
 const MusicPlayer = () => {
   const selected_song = useSelectedSongStore((state) => state.song);
   const show_music_player = useSelectedSongStore(
@@ -468,6 +485,7 @@ const MusicPlayer = () => {
           onLoadStart={handleLoadStart}
           onCanPlay={handleCanPlay}
           onWaiting={handleWaiting}
+          customAdditionalControls={[<RandomButton />, <RepeatButton />]}
         />
       </div>
     </motion.div>
