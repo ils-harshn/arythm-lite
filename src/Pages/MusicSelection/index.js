@@ -40,11 +40,16 @@ export const Thumbnail = ({ path }) => {
 
 const Details = ({ song }) => {
   return (
-    <div className="w-full h-full flex justify-center items-center flex-col">
+    <motion.div
+      className="w-full h-full flex justify-center items-center flex-col"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
       <Thumbnail path={song.album.thumbnail} />
       <div className="mt-1">{song.original_name}</div>
       <div className="text-xs text-slate-400">{song.album.title}</div>
-    </div>
+    </motion.div>
   );
 };
 
