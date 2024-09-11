@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import DocumentMeta from "react-document-meta";
 import useSelectedSongStore from "../../Store/selectedSongStore";
 import { NoSongSelected, Thumbnail } from "../MusicSelection";
@@ -5,9 +6,12 @@ import { get_image_url } from "../../API/helpers";
 
 const Details = ({ song }) => {
   return (
-    <div
+    <motion.div
       key={song._id}
       className="w-full h-full flex justify-center items-center flex-col relative"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
     >
       <div
         className="-z-50 absolute top-0 left-0 w-full h-full"
@@ -24,7 +28,7 @@ const Details = ({ song }) => {
       <Thumbnail path={song.album.thumbnail} />
       <div className="mt-1">{song.original_name}</div>
       <div className="text-xs text-slate-400">{song.album.title}</div>
-    </div>
+    </motion.div>
   );
 };
 
