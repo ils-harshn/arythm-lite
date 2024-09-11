@@ -21,6 +21,7 @@ import { get_song_url } from "../../../API/helpers";
 import { MdClose, MdFilterListAlt } from "react-icons/md";
 import useFilterStore from "../../../Store/filterStore";
 import { useDebounce } from "use-debounce";
+import { useGetStatus } from "../../../API/status/queryHooks";
 
 const Song = ({ data }) => {
   const selected_song = useSelectedSongStore((state) => state.song);
@@ -499,7 +500,26 @@ const Navigator = () => {
   );
 };
 
+const FullScreenLoader = () => {
+  return (
+    <motion.div
+      className="flex justify-center items-center h-screen w-screen"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2 }}
+    >
+      <div>Loading...</div>
+    </motion.div>
+  );
+};
+
 const ListLayout = () => {
+  const { isLoading, isError } = useGetStatus();
+
+  if (isError) return <div>Something went wrong on server side</div>;
+
+  if (isLoading) return <FullScreenLoader />;
+
   return (
     <div className="flex w-screen h-screen">
       <SongsListContainer />
