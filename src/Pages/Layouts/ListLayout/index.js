@@ -464,6 +464,7 @@ const MusicPlayer = () => {
           autoPlay
           src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
           showJumpControls
+          showSkipControls
           onLoadStart={handleLoadStart}
           onCanPlay={handleCanPlay}
           onWaiting={handleWaiting}
