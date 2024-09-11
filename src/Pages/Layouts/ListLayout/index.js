@@ -1,6 +1,6 @@
 import "react-h5-audio-player/lib/styles.css";
 import { NavLink, Outlet } from "react-router-dom";
-import { useGetSongs } from "../../../API/songs/queryHooks";
+import { useGetRandomSong, useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
 import { useCallback, useRef, useState } from "react";
 import { AutoSizer, InfiniteLoader, List } from "react-virtualized";
@@ -482,10 +482,23 @@ const RepeatButton = () => {
 const MusicPlayer = () => {
   const playerRef = useRef(null);
   const selected_song = useSelectedSongStore((state) => state.song);
+  const set_song = useSelectedSongStore((state) => state.set_song);
   const show_music_player = useSelectedSongStore(
     (state) => state.show_music_player
   );
   const [isLoading, setIsLoading] = useState(false);
+
+  const { refetch: fetchRandomSong } = useGetRandomSong({
+    enabled: false,
+    onSuccess: (data) => {
+      set_song(data);
+    },
+  });
+
+  const get_random_song = () => {
+    setIsLoading(true);
+    fetchRandomSong();
+  };
 
   const handleLoadStart = () => {
     setIsLoading(true);
@@ -505,6 +518,7 @@ const MusicPlayer = () => {
     if (get_music_option === GET_MUSIC_OPTIONS.REPEAT) {
       audio.current.play();
     } else if (get_music_option === GET_MUSIC_OPTIONS.RANDOM) {
+      get_random_song();
     }
   };
 
@@ -515,6 +529,7 @@ const MusicPlayer = () => {
       audio.currentTime = 0;
       audio.play();
     } else if (get_music_option === GET_MUSIC_OPTIONS.RANDOM) {
+      get_random_song();
     }
   };
 
@@ -525,6 +540,7 @@ const MusicPlayer = () => {
       audio.currentTime = 0;
       audio.play();
     } else if (get_music_option === GET_MUSIC_OPTIONS.RANDOM) {
+      get_random_song();
     }
   };
 
