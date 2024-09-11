@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import DocumentMeta from "react-document-meta";
 import useSelectedSongStore from "../../Store/selectedSongStore";
 import { get_image_url } from "../../API/helpers";
@@ -49,7 +50,12 @@ const Details = ({ song }) => {
 
 export const NoSongSelected = () => {
   return (
-    <div className="flex justify-center items-center h-full">
+    <motion.div
+      className="flex justify-center items-center h-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2 }}
+    >
       <div>
         <div className="text-center">
           <h3 className="text-6xl font-semibold">
@@ -67,10 +73,8 @@ export const NoSongSelected = () => {
           </h3>
           <p className="mt-4 text-xs">Collection of all time songs</p>
         </div>
-
-        <hr className="my-10" />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
