@@ -26,8 +26,8 @@ const Details = ({ song }) => {
         />
       </div>
       <Thumbnail path={song.album.thumbnail} />
-      <div className="mt-1">{song.original_name}</div>
-      <div className="text-xs text-slate-400">{song.album.title}</div>
+      <div className="mt-1 text-white font-semibold">{song.original_name}</div>
+      <div className="text-xs text-white">{song.album.title}</div>
     </motion.div>
   );
 };
