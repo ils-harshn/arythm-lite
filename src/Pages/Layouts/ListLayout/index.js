@@ -2,7 +2,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { NavLink, Outlet } from "react-router-dom";
 import { useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { AutoSizer, InfiniteLoader, List } from "react-virtualized";
 
 import Skeleton from "react-loading-skeleton";
@@ -480,6 +480,7 @@ const RepeatButton = () => {
 };
 
 const MusicPlayer = () => {
+  const playerRef = useRef(null);
   const selected_song = useSelectedSongStore((state) => state.song);
   const show_music_player = useSelectedSongStore(
     (state) => state.show_music_player
@@ -498,6 +499,35 @@ const MusicPlayer = () => {
     setIsLoading(true);
   };
 
+  const handleAudioEnded = () => {
+    const audio = playerRef.current.audio.current;
+    const get_music_option = musicPlayerOptionStore.getState().get_music_option;
+    if (get_music_option === GET_MUSIC_OPTIONS.REPEAT) {
+      audio.current.play();
+    } else if (get_music_option === GET_MUSIC_OPTIONS.RANDOM) {
+    }
+  };
+
+  const handleClickNext = () => {
+    const audio = playerRef.current.audio.current;
+    const get_music_option = musicPlayerOptionStore.getState().get_music_option;
+    if (get_music_option === GET_MUSIC_OPTIONS.REPEAT) {
+      audio.currentTime = 0;
+      audio.play();
+    } else if (get_music_option === GET_MUSIC_OPTIONS.RANDOM) {
+    }
+  };
+
+  const handleClickPrevious = () => {
+    const audio = playerRef.current.audio.current;
+    const get_music_option = musicPlayerOptionStore.getState().get_music_option;
+    if (get_music_option === GET_MUSIC_OPTIONS.REPEAT) {
+      audio.currentTime = 0;
+      audio.play();
+    } else if (get_music_option === GET_MUSIC_OPTIONS.RANDOM) {
+    }
+  };
+
   return (
     <motion.div
       initial={{ height: 0, opacity: 0 }}
@@ -511,14 +541,17 @@ const MusicPlayer = () => {
       <div className="relative">
         {isLoading ? <LineLoader className="absolute top-0 left-0" /> : null}
         <AudioPlayer
+          ref={playerRef}
           autoPlay
           src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
-          showJumpControls
           showSkipControls
           onLoadStart={handleLoadStart}
           onCanPlay={handleCanPlay}
           onWaiting={handleWaiting}
+          onEnded={handleAudioEnded}
           customAdditionalControls={[<RandomButton />, <RepeatButton />]}
+          onClickNext={handleClickNext}
+          onClickPrevious={handleClickPrevious}
         />
       </div>
     </motion.div>
