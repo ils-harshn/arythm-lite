@@ -23,6 +23,9 @@ import useFilterStore from "../../../Store/filterStore";
 import { useDebounce } from "use-debounce";
 import { useGetStatus } from "../../../API/status/queryHooks";
 import { IoMdRepeat, IoMdShuffle } from "react-icons/io";
+import musicPlayerOptionStore, {
+  GET_MUSIC_OPTIONS,
+} from "../../../Store/musicPlayerOptionStore";
 
 const Song = ({ data }) => {
   const selected_song = useSelectedSongStore((state) => state.song);
@@ -431,16 +434,46 @@ const LineLoader = ({ className = "" }) => {
 };
 
 const RandomButton = () => {
+  const state = musicPlayerOptionStore((state) => state.get_music_option);
+  const set_state = musicPlayerOptionStore((state) => state.set_music_option);
+
+  const handleClick = () => {
+    if (state === GET_MUSIC_OPTIONS.RANDOM) set_state(GET_MUSIC_OPTIONS.NULL);
+    else set_state(GET_MUSIC_OPTIONS.RANDOM);
+  };
+
   return (
-    <button key="random" className="p-2" aria-label="Random">
+    <button
+      key="random"
+      onClick={handleClick}
+      className={`p-2 ${
+        state === GET_MUSIC_OPTIONS.RANDOM ? "opacity-100" : "opacity-50"
+      }`}
+      aria-label="Random"
+    >
       <IoMdShuffle size={20} />
     </button>
   );
 };
 
 const RepeatButton = () => {
+  const state = musicPlayerOptionStore((state) => state.get_music_option);
+  const set_state = musicPlayerOptionStore((state) => state.set_music_option);
+
+  const handleClick = () => {
+    if (state === GET_MUSIC_OPTIONS.REPEAT) set_state(GET_MUSIC_OPTIONS.NULL);
+    else set_state(GET_MUSIC_OPTIONS.REPEAT);
+  };
+
   return (
-    <button key="repeat" className="p-2" aria-label="Repeat">
+    <button
+      key="repeat"
+      onClick={handleClick}
+      className={`p-2 ${
+        state === GET_MUSIC_OPTIONS.REPEAT ? "opacity-100" : "opacity-50"
+      }`}
+      aria-label="Repeat"
+    >
       <IoMdRepeat size={24} />
     </button>
   );
