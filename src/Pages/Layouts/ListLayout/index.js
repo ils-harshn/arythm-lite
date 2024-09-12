@@ -270,8 +270,16 @@ const FullScreenToggleOption = () => {
 };
 
 const Options = () => {
+  const is_songslist_visible = useOptionsStore(
+    (state) => state.is_songslist_visible
+  );
+
   return (
-    <div className="p-2 bg-black absolute top-0 left-full rounded-br-lg cursor-pointer z-10">
+    <div
+      className={`${
+        is_songslist_visible ? "opacity-100" : "opacity-10"
+      } p-2 bg-black absolute top-0 left-full rounded-br-lg cursor-pointer z-10 hover:opacity-100 duration-300`}
+    >
       <SongsListCollaperOption />
       <FilterOption />
       <OpenSelectedSongOption />
