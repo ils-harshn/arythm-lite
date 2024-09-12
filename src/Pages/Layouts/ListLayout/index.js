@@ -487,6 +487,7 @@ const MusicPlayer = () => {
     (state) => state.show_music_player
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [ishover, setHover] = useState(false);
 
   const { refetch: fetchRandomSong } = useGetRandomSong({
     enabled: false,
@@ -545,32 +546,46 @@ const MusicPlayer = () => {
   };
 
   return (
-    <motion.div
-      initial={{ height: 0, opacity: 0 }}
-      animate={{
-        height: selected_song?.url && show_music_player ? "auto" : 0,
-        opacity: selected_song?.url && show_music_player ? 1 : 0,
-      }}
-      transition={{ duration: 0.3 }}
-      style={{ overflow: "hidden" }}
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
-      <div className="relative">
-        {isLoading ? <LineLoader className="absolute top-0 left-0" /> : null}
-        <AudioPlayer
-          ref={playerRef}
-          autoPlay
-          src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
-          showSkipControls
-          onLoadStart={handleLoadStart}
-          onCanPlay={handleCanPlay}
-          onWaiting={handleWaiting}
-          onEnded={handleAudioEnded}
-          customAdditionalControls={[<RandomButton />, <RepeatButton />]}
-          onClickNext={handleClickNext}
-          onClickPrevious={handleClickPrevious}
-        />
-      </div>
-    </motion.div>
+      <div className="h-1"></div>
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{
+          height:
+            (selected_song?.url && show_music_player) ||
+            (ishover && selected_song?.url)
+              ? "auto"
+              : 0,
+          opacity:
+            (selected_song?.url && show_music_player) ||
+            (ishover && selected_song?.url)
+              ? 1
+              : 0,
+        }}
+        transition={{ duration: 0.3 }}
+        style={{ overflow: "hidden" }}
+      >
+        <div className="relative">
+          {isLoading ? <LineLoader className="absolute top-0 left-0" /> : null}
+          <AudioPlayer
+            ref={playerRef}
+            autoPlay
+            src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
+            showSkipControls
+            onLoadStart={handleLoadStart}
+            onCanPlay={handleCanPlay}
+            onWaiting={handleWaiting}
+            onEnded={handleAudioEnded}
+            customAdditionalControls={[<RandomButton />, <RepeatButton />]}
+            onClickNext={handleClickNext}
+            onClickPrevious={handleClickPrevious}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
