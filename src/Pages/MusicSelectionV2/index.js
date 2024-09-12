@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import DocumentMeta from "react-document-meta";
 import useSelectedSongStore from "../../Store/selectedSongStore";
-import { NoSongSelected, Thumbnail } from "../MusicSelection";
+import { MusicPlayingTime, NoSongSelected, Thumbnail } from "../MusicSelection";
 import { get_image_url } from "../../API/helpers";
 
 const Details = ({ song }) => {
@@ -28,6 +28,7 @@ const Details = ({ song }) => {
       <Thumbnail path={song.album.thumbnail} />
       <div className="mt-1 text-white font-semibold">{song.original_name}</div>
       <div className="text-xs text-white">{song.album.title}</div>
+      <MusicPlayingTime className="text-sm mt-2" />
     </motion.div>
   );
 };

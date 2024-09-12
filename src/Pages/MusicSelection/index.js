@@ -4,6 +4,7 @@ import useSelectedSongStore from "../../Store/selectedSongStore";
 import { get_image_url } from "../../API/helpers";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import useMusicPlayerRefStore from "../../Store/musicPlayerRefStore";
 
 export const Thumbnail = ({ path }) => {
   const [isLoaded, setLoaded] = useState(false);
@@ -38,6 +39,42 @@ export const Thumbnail = ({ path }) => {
   );
 };
 
+export const MusicPlayingTime = ({ className }) => {
+  const [currentTime, setCurrentTime] = useState("00:00");
+  const playerRef = useMusicPlayerRefStore((state) => state.music_player_ref);
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  useEffect(() => {
+    const audioElement = playerRef?.current?.audio?.current;
+
+    const handleTimeUpdate = () => {
+      if (audioElement) {
+        const time = audioElement.currentTime;
+        setCurrentTime(formatTime(time));
+      }
+    };
+
+    if (audioElement) {
+      audioElement.addEventListener("timeupdate", handleTimeUpdate);
+    }
+
+    return () => {
+      if (audioElement) {
+        audioElement.removeEventListener("timeupdate", handleTimeUpdate);
+      }
+    };
+  }, [playerRef]); // Only playerRef is needed in the dependency array
+
+  return <div className={className}>{currentTime}</div>;
+};
+
 const Details = ({ song }) => {
   return (
     <motion.div
@@ -48,7 +85,8 @@ const Details = ({ song }) => {
     >
       <Thumbnail path={song.album.thumbnail} />
       <div className="mt-1">{song.original_name}</div>
-      <div className="text-xs text-slate-400">{song.album.title}</div>
+      <div className="text-xs text-slate-300">{song.album.title}</div>
+      <MusicPlayingTime className="text-sm mt-2" />
     </motion.div>
   );
 };

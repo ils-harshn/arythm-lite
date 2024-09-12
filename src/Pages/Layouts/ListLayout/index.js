@@ -2,7 +2,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { NavLink, Outlet } from "react-router-dom";
 import { useGetRandomSong, useGetSongs } from "../../../API/songs/queryHooks";
 import { motion } from "framer-motion";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AutoSizer, InfiniteLoader, List } from "react-virtualized";
 
 import Skeleton from "react-loading-skeleton";
@@ -26,6 +26,7 @@ import { IoMdRepeat, IoMdShuffle } from "react-icons/io";
 import musicPlayerOptionStore, {
   GET_MUSIC_OPTIONS,
 } from "../../../Store/musicPlayerOptionStore";
+import useMusicPlayerRefStore from "../../../Store/musicPlayerRefStore";
 
 const Song = ({ data }) => {
   const selected_song = useSelectedSongStore((state) => state.song);
@@ -494,6 +495,9 @@ const MusicPlayer = () => {
   const show_music_player = useSelectedSongStore(
     (state) => state.show_music_player
   );
+  const set_player_ref = useMusicPlayerRefStore(
+    (state) => state.set_music_player_ref
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [ishover, setHover] = useState(false);
 
@@ -552,6 +556,10 @@ const MusicPlayer = () => {
       get_random_song();
     }
   };
+
+  useEffect(() => {
+    set_player_ref(playerRef);
+  }, [playerRef, set_player_ref]);
 
   return (
     <div
