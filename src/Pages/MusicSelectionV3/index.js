@@ -81,10 +81,9 @@ const Lyrics = ({ song }) => {
         isError || isLoading || isFetching ? "" : "mb-20 min-h-28"
       }`}
       animate={{
-        height: isError || isLoading || isFetching ? "0px" : "fit-content",
+        height: isError || isLoading || isFetching ? "0px" : "100px",
       }}
       initial={{ height: "0px" }}
-      layout
       transition={{ duration: 0.3 }}
     >
       <div className="opacity-50">{prevLyric}</div>
