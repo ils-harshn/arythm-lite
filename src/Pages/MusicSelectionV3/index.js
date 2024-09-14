@@ -15,7 +15,7 @@ const LyricCurrentLine = ({ currentLyric }) => {
   return (
     <motion.div
       key={currentLyric} // Key is important to trigger re-animation on change
-      className="font-semibold text-2xl my-2 w-[600px]"
+      className="font-semibold text-2xl my-2"
       initial={{ opacity: 0, y: 10 }} // Start animation with opacity 0 and slight downward position
       animate={{ opacity: 1, y: 0 }} // Animate to full opacity and original position
       exit={{ opacity: 0, y: -10 }} // Animate out by moving upwards and fading out
@@ -78,15 +78,18 @@ const Lyrics = ({ song }) => {
   return (
     <motion.div
       className={`text-center overflow-hidden ${
-        isError || isLoading || isFetching ? "" : "ml-20"
+        isError || isLoading || isFetching ? "" : "mb-20 min-h-28"
       }`}
-      animate={{ width: isError || isLoading || isFetching ? "0px" : "600px" }}
-      initial={{ width: "0px" }}
-      transition={{ duration: 0.2 }}
+      animate={{
+        height: isError || isLoading || isFetching ? "0px" : "fit-content",
+      }}
+      initial={{ height: "0px" }}
+      layout
+      transition={{ duration: 0.3 }}
     >
-      <div className="opacity-50 w-[600px]">{prevLyric}</div>
+      <div className="opacity-50">{prevLyric}</div>
       <LyricCurrentLine currentLyric={currentLyric} />
-      <div className="opacity-50 w-[600px]">{nextLyric}</div>
+      <div className="opacity-50">{nextLyric}</div>
     </motion.div>
   );
 };
@@ -95,7 +98,7 @@ const Details = ({ song }) => {
   return (
     <motion.div
       key={song._id}
-      className="w-full h-full flex justify-center items-center relative"
+      className="w-full h-full flex justify-center items-center flex-col relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -103,7 +106,7 @@ const Details = ({ song }) => {
       <div
         className="-z-50 absolute top-0 left-0 w-full h-full"
         style={{
-          filter: "blur(20px)",
+          filter: "blur(200px)",
         }}
       >
         <img
@@ -112,6 +115,7 @@ const Details = ({ song }) => {
           alt="backdp"
         />
       </div>
+      <Lyrics song={song} />
       <div>
         <Thumbnail path={song.album.thumbnail} />
         <div className="mt-1 text-white font-semibold text-center">
@@ -120,7 +124,6 @@ const Details = ({ song }) => {
         <div className="text-xs text-white text-center">{song.album.title}</div>
         <MusicPlayingTime className="text-sm mt-2 text-center" />
       </div>
-      <Lyrics song={song} />
     </motion.div>
   );
 };
