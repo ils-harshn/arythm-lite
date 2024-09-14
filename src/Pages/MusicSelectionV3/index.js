@@ -11,6 +11,21 @@ import { useGetSongLyric } from "../../API/songs/queryHooks";
 import { useEffect, useState } from "react";
 import useMusicPlayerRefStore from "../../Store/musicPlayerRefStore";
 
+const LyricCurrentLine = ({ currentLyric }) => {
+  return (
+    <motion.div
+      key={currentLyric} // Key is important to trigger re-animation on change
+      className="font-semibold text-2xl my-2 w-[600px]"
+      initial={{ opacity: 0, y: 10 }} // Start animation with opacity 0 and slight downward position
+      animate={{ opacity: 1, y: 0 }} // Animate to full opacity and original position
+      exit={{ opacity: 0, y: -10 }} // Animate out by moving upwards and fading out
+      transition={{ duration: 0.3 }} // Control the speed of the animation
+    >
+      {currentLyric}
+    </motion.div>
+  );
+};
+
 const Lyrics = ({ song }) => {
   const [parsedLyrics, setParsedLyrics] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -62,15 +77,15 @@ const Lyrics = ({ song }) => {
 
   return (
     <motion.div
-      className={`text-center overflow-hidden ${isError || isLoading || isFetching ? "": "ml-20"}`}
+      className={`text-center overflow-hidden ${
+        isError || isLoading || isFetching ? "" : "ml-20"
+      }`}
       animate={{ width: isError || isLoading || isFetching ? "0px" : "600px" }}
       initial={{ width: "0px" }}
       transition={{ duration: 0.2 }}
     >
       <div className="opacity-50 w-[600px]">{prevLyric}</div>
-      <div className="font-semibold text-2xl my-2 w-[600px]">
-        {currentLyric}
-      </div>
+      <LyricCurrentLine currentLyric={currentLyric} />
       <div className="opacity-50 w-[600px]">{nextLyric}</div>
     </motion.div>
   );
