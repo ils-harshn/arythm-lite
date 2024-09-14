@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from "react-query";
-import { getRandomSong, getSongs } from "./queryFunctions";
+import { getRandomSong, getSongLyric, getSongs } from "./queryFunctions";
 import COMMON_CONFIG from "../common_config";
 import QUERY_KEYS from "../query_keys";
 
@@ -22,6 +22,17 @@ export const useGetRandomSong = (config = {}) =>
   useQuery({
     queryKey: [QUERY_KEYS.GET_RANDOM_SONG],
     queryFn: getRandomSong,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    ...COMMON_CONFIG,
+    ...config,
+  });
+
+export const useGetSongLyric = (payload, config = {}) =>
+  useQuery({
+    queryKey: [QUERY_KEYS.GET_SONG_LYRIC],
+    queryFn: () => getSongLyric(payload),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

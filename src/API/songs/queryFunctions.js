@@ -37,3 +37,12 @@ export const getRandomSong = async () => {
 
   return response.data;
 };
+
+export const getSongLyric = async (payload) => {
+  const response = await api({
+    method: "get",
+    url: ENDPOINTS.GET_SONG_LYRIC(payload.path),
+  });
+
+  return response.data;
+};

@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ListLayout from "./Pages/Layouts/ListLayout";
 import MusicSelection from "./Pages/MusicSelection";
 import MusicSelectionV2 from "./Pages/MusicSelectionV2";
+import MusicSelectionV3 from "./Pages/MusicSelectionV3";
 
 function App() {
   const meta = {
@@ -20,6 +21,7 @@ function App() {
             <Route index element={<MusicSelection />} />
             <Route path="/v1" element={<MusicSelection />} />
             <Route path="/v2" element={<MusicSelectionV2 />} />
+            <Route path="/v3" element={<MusicSelectionV3 />} />
           </Route>
         </Routes>
       </BrowserRouter>

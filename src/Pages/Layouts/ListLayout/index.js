@@ -628,6 +628,16 @@ const Navigator = () => {
       >
         V2
       </NavLink>
+      <NavLink
+        to={"/v3"}
+        className={({ isActive }) =>
+          `block text-center text-xs cursor-pointer ${
+            isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
+          }`
+        }
+      >
+        V3
+      </NavLink>
     </div>
   );
 };
