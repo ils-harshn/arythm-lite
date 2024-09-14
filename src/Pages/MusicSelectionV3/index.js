@@ -60,14 +60,19 @@ const Lyrics = ({ song }) => {
   const currentLyric = parsedLyrics[currentIndex]?.text || "";
   const nextLyric = parsedLyrics[currentIndex + 1]?.text || "";
 
-  if (isError || isLoading || isFetching) return null;
-
   return (
-    <div className="text-center w-[600px] ml-20">
-      <div className="opacity-50">{prevLyric}</div>
-      <div className="font-semibold text-2xl my-2">{currentLyric}</div>
-      <div className="opacity-50">{nextLyric}</div>
-    </div>
+    <motion.div
+      className="text-center ml-20 overflow-hidden"
+      animate={{ width: isError || isLoading || isFetching ? "0px" : "600px" }}
+      initial={{ width: "0px" }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className="opacity-50 w-[600px]">{prevLyric}</div>
+      <div className="font-semibold text-2xl my-2 w-[600px]">
+        {currentLyric}
+      </div>
+      <div className="opacity-50 w-[600px]">{nextLyric}</div>
+    </motion.div>
   );
 };
 
@@ -83,7 +88,7 @@ const Details = ({ song }) => {
       <div
         className="-z-50 absolute top-0 left-0 w-full h-full"
         style={{
-          filter: "blur(6px)",
+          filter: "blur(20px)",
         }}
       >
         <img
