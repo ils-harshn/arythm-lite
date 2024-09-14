@@ -78,7 +78,7 @@ const Lyrics = ({ song }) => {
   return (
     <motion.div
       className={`text-center overflow-hidden ${
-        isError || isLoading || isFetching ? "" : "mb-20 min-h-28"
+        isError || isLoading || isFetching ? "" : "mb-20"
       }`}
       animate={{
         height: isError || isLoading || isFetching ? "0px" : "100px",
