@@ -62,7 +62,7 @@ const Lyrics = ({ song }) => {
 
   return (
     <motion.div
-      className="text-center ml-20 overflow-hidden"
+      className={`text-center overflow-hidden ${isError || isLoading || isFetching ? "": "ml-20"}`}
       animate={{ width: isError || isLoading || isFetching ? "0px" : "600px" }}
       initial={{ width: "0px" }}
       transition={{ duration: 0.2 }}
