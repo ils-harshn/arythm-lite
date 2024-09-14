@@ -105,7 +105,7 @@ const Details = ({ song }) => {
       <div
         className="-z-50 absolute top-0 left-0 w-full h-full"
         style={{
-          filter: "blur(200px)",
+          filter: "blur(6px)",
         }}
       >
         <img
