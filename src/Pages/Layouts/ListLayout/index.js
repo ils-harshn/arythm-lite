@@ -529,7 +529,7 @@ const MusicPlayer = () => {
     const audio = playerRef.current.audio.current;
     const get_music_option = musicPlayerOptionStore.getState().get_music_option;
     if (get_music_option === GET_MUSIC_OPTIONS.REPEAT) {
-      audio.current.play();
+      audio.play();
     } else if (get_music_option === GET_MUSIC_OPTIONS.RANDOM) {
       get_random_song();
     }
