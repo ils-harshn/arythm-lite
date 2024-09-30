@@ -639,6 +639,16 @@ export const Navigator = () => {
       >
         V3
       </NavLink>
+      <NavLink
+        to={"/v4"}
+        className={({ isActive }) =>
+          `block text-center text-xs cursor-pointer ${
+            isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
+          }`
+        }
+      >
+        V4
+      </NavLink>
     </div>
   );
 };
