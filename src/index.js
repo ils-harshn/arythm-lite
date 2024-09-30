@@ -7,11 +7,11 @@ import BaseQueryProvider from "./API/provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BaseQueryProvider>
       <App />
     </BaseQueryProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

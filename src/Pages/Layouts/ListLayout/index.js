@@ -406,7 +406,7 @@ const Filter = () => {
   );
 };
 
-const SongsListContainer = () => {
+export const SongsListContainer = () => {
   const is_open = useOptionsStore((state) => state.is_songslist_visible);
 
   return (
@@ -488,7 +488,7 @@ const RepeatButton = () => {
   );
 };
 
-const MusicPlayer = () => {
+export const MusicPlayer = () => {
   const playerRef = useRef(null);
   const selected_song = useSelectedSongStore((state) => state.song);
   const set_song = useSelectedSongStore((state) => state.set_song);
@@ -589,6 +589,7 @@ const MusicPlayer = () => {
           <AudioPlayer
             ref={playerRef}
             autoPlay
+            crossOrigin="*"
             src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
             showSkipControls
             onLoadStart={handleLoadStart}
@@ -605,7 +606,7 @@ const MusicPlayer = () => {
   );
 };
 
-const Navigator = () => {
+export const Navigator = () => {
   return (
     <div className="absolute top-0 right-0 w-10 z-10 bg-black px-2 py-1 opacity-0 hover:opacity-100">
       <NavLink
@@ -642,7 +643,7 @@ const Navigator = () => {
   );
 };
 
-const FullScreenLoader = () => {
+export const FullScreenLoader = () => {
   return (
     <motion.div
       className="flex justify-center items-center h-screen w-screen"
