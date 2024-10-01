@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import DocumentMeta from "react-document-meta";
 import useSelectedSongStore from "../../Store/selectedSongStore";
-import { NoSongSelected, Thumbnail } from "../MusicSelection";
-import { useEffect, useRef } from "react";
+import { MusicPlayingTime, NoSongSelected } from "../MusicSelection";
+import { useEffect, useRef, useState } from "react";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
 import useMusicPlayerRefStore from "../../Store/musicPlayerRefStore";
 import { get_image_url } from "../../API/helpers";
+import Skeleton from "react-loading-skeleton";
 
 const AddVisualizer = ({ on }) => {
   const containerRef = useRef(null);
@@ -63,6 +64,44 @@ const AddVisualizer = ({ on }) => {
   return <div ref={containerRef} className="absolute w-full h-full z-0"></div>;
 };
 
+const ThumbnailV4 = ({ song }) => {
+  const [isLoaded, setLoaded] = useState(false);
+  const path = song.album.thumbnail;
+
+  useEffect(() => {
+    setLoaded(false);
+    const img = new Image();
+    img.src = get_image_url(path);
+
+    if (img.complete) {
+      setLoaded(true);
+    } else {
+      img.onload = () => setLoaded(true);
+    }
+  }, [path]);
+
+  return (
+    <div className="w-80 h-80 relative">
+      {isLoaded ? null : (
+        <div className="absolute top-[-4px] left-0 w-80 h-80">
+          <Skeleton width={320} height={320} className="rounded" />
+        </div>
+      )}
+      <div>
+        <img
+          src={get_image_url(path)}
+          className="w-80 h-80 rounded"
+          alt="thumb"
+        />
+      </div>
+      <div className="flex justify-between absolute bottom-0 w-full p-2 bg-gradient-to-t from-black/80 to-transparent">
+        <div className="truncate w-[220px]">{song.original_name}</div>
+        <MusicPlayingTime />
+      </div>
+    </div>
+  );
+};
+
 const Details = ({ song }) => {
   const detailContainerRef = useRef(null);
 
@@ -75,16 +114,14 @@ const Details = ({ song }) => {
       transition={{ duration: 0.8 }}
     >
       <AddVisualizer on={detailContainerRef} />
-      <div
-        className="absolute top-0 left-0 w-full h-full opacity-10"
-      >
+      <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <img
           className="block h-full w-full object-cover"
           src={get_image_url(song.album.thumbnail)}
           alt="backdp"
         />
       </div>
-      <Thumbnail path={song.album.thumbnail} />
+      <ThumbnailV4 song={song} />
     </motion.div>
   );
 };

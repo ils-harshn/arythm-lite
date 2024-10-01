@@ -39,7 +39,7 @@ export const Thumbnail = ({ path }) => {
   );
 };
 
-export const MusicPlayingTime = ({ className }) => {
+export const MusicPlayingTime = ({ className, ...props }) => {
   const [currentTime, setCurrentTime] = useState("00:00");
   const playerRef = useMusicPlayerRefStore((state) => state.music_player_ref);
 
@@ -72,7 +72,7 @@ export const MusicPlayingTime = ({ className }) => {
     };
   }, [playerRef]); // Only playerRef is needed in the dependency array
 
-  return <div className={className}>{currentTime}</div>;
+  return <div className={className} {...props}>{currentTime}</div>;
 };
 
 const Details = ({ song }) => {
