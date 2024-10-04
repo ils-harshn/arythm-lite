@@ -590,7 +590,6 @@ export const MusicPlayer = () => {
             ref={playerRef}
             autoPlay
             crossOrigin="*"
-            volume={0.2}
             src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
             showSkipControls
             onLoadStart={handleLoadStart}
