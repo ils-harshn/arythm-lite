@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
 import DocumentMeta from "react-document-meta";
 import useSelectedSongStore from "../../Store/selectedSongStore";
-import { NoSongSelected } from "../MusicSelection";
+import { MusicPlayingTime, NoSongSelected, Thumbnail } from "../MusicSelection";
 import { useEffect, useRef } from "react";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
 import useMusicPlayerRefStore from "../../Store/musicPlayerRefStore";
 import { get_image_url } from "../../API/helpers";
-import { ThumbnailV4 as ThumbnailV5 } from "../MusicSelectionV4";
 
 const AddVisualizer = ({ imgBgRef }) => {
   const containerRef = useRef(null);
@@ -76,7 +75,10 @@ const Details = ({ song }) => {
           alt="backdp"
         />
       </div>
-      <ThumbnailV5 song={song} />
+      <Thumbnail path={song.album.thumbnail} />
+      <div className="mt-1 text-white relative">{song.original_name}</div>
+      <div className="text-xs text-white relative">{song.album.title}</div>
+      <MusicPlayingTime className="text-sm mt-2 text-white relative" />
       <AddVisualizer imgBgRef={bgImageContainerRef} />
     </motion.div>
   );
