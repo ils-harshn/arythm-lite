@@ -26,7 +26,7 @@ const LyricCurrentLine = ({ currentLyric }) => {
   );
 };
 
-const Lyrics = ({ song }) => {
+export const Lyrics = ({ song }) => {
   const [parsedLyrics, setParsedLyrics] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const {

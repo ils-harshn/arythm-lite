@@ -590,6 +590,7 @@ export const MusicPlayer = () => {
             ref={playerRef}
             autoPlay
             crossOrigin="*"
+            volume={0.2}
             src={selected_song?.url ? get_song_url(selected_song?.url) : ""}
             showSkipControls
             onLoadStart={handleLoadStart}
@@ -648,6 +649,16 @@ export const Navigator = () => {
         }
       >
         V4
+      </NavLink>
+      <NavLink
+        to={"/v5"}
+        className={({ isActive }) =>
+          `block text-center text-xs cursor-pointer ${
+            isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
+          }`
+        }
+      >
+        V5
       </NavLink>
     </div>
   );

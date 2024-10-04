@@ -9,6 +9,8 @@ import MusicSelectionV2 from "./Pages/MusicSelectionV2";
 import MusicSelectionV3 from "./Pages/MusicSelectionV3";
 import MusicSelectionV4 from "./Pages/MusicSelectionV4";
 import ListLayoutV4 from "./Pages/Layouts/ListLayout/ListLayoutV4";
+import ListLayoutV5 from "./Pages/Layouts/ListLayout/ListLayoutV5";
+import MusicSelectionV5 from "./Pages/MusicSelectionV5";
 
 function App() {
   const meta = {
@@ -27,6 +29,9 @@ function App() {
           </Route>
           <Route path="/" element={<ListLayoutV4 />}>
             <Route path="/v4" element={<MusicSelectionV4 />} />
+          </Route>
+          <Route path="/" element={<ListLayoutV5 />}>
+            <Route path="/v5" element={<MusicSelectionV5 />} />
           </Route>
         </Routes>
       </BrowserRouter>
