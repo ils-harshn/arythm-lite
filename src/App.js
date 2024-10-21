@@ -14,12 +14,12 @@ const SongCard = ({ data, onClick, ...props }) => {
     >
       {/* Album title */}
       <motion.h2 className="text-lg font-semibold text-white truncate">
-        {data.album.title}
+        {data.original_name}  
       </motion.h2>
 
       {/* Song title */}
       <motion.p className="text-sm text-gray-300 truncate mt-1">
-        {data.original_name}
+        {data.album.title}
       </motion.p>
     </motion.div>
   );
