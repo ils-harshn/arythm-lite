@@ -26,6 +26,14 @@ const SongCard = ({ data, onClick, ...props }) => {
 };
 
 const SelectedSongCard = ({ data, onClickClose }) => {
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.1;
+    }
+  }, [data]); // Adjust the volume when data changes (e.g., when a new song is selected)
+
   return (
     <AnimatePresence>
       {data && (
@@ -76,7 +84,7 @@ const SelectedSongCard = ({ data, onClickClose }) => {
             {/* Artists section */}
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Artists:</h3>
-              <div className="flex items-center flex-wrap gap-3">
+              <div className="flex items-center flex-wrap gap-3 mt-2">
                 {data.artists.map((artist) => (
                   <div key={artist._id} className="flex items-center">
                     <img
@@ -92,7 +100,7 @@ const SelectedSongCard = ({ data, onClickClose }) => {
 
             {/* Song controls */}
             <div className="mt-4">
-              <audio controls className="w-full" volume="0.2" autoPlay>
+              <audio ref={audioRef} controls className="w-full" autoPlay>
                 <source
                   src={`${API}stream/song/${data.url}`}
                   type="audio/mp3"
