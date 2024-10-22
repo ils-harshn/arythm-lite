@@ -76,13 +76,13 @@ const SelectedSongCard = ({ data, onClickClose }) => {
             {/* Artists section */}
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Artists:</h3>
-              <div className="flex items-center space-x-2 mt-2">
+              <div className="flex items-center flex-wrap gap-3">
                 {data.artists.map((artist) => (
-                  <div key={artist._id} className="flex items-center space-x-2">
+                  <div key={artist._id} className="flex items-center">
                     <img
                       src={`${API}stream/image/${artist.artists_thumbnail300x300}`}
                       alt={artist.name}
-                      className="w-10 h-10 rounded-full shadow-md"
+                      className="w-10 h-10 rounded-full shadow-md mr-2"
                     />
                     <p className="text-sm">{artist.name}</p>
                   </div>
