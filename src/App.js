@@ -26,7 +26,7 @@ const SongCard = ({ data, onClick, ...props }) => {
   );
 };
 
-const SelectedSongCard = ({ data, onClickClose }) => {
+const SelectedSongCard = ({ data, onClickClose, onSongEnd }) => {
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -101,7 +101,13 @@ const SelectedSongCard = ({ data, onClickClose }) => {
 
             {/* Song controls */}
             <div className="mt-4">
-              <audio ref={audioRef} controls className="w-full" autoPlay>
+              <audio
+                ref={audioRef}
+                controls
+                className="w-full"
+                autoPlay
+                onEnded={onSongEnd} // Call onSongEnd when the song ends
+              >
                 <source
                   src={`${API}stream/song/${data.url}`}
                   type="audio/mp3"
@@ -118,6 +124,12 @@ const SelectedSongCard = ({ data, onClickClose }) => {
 
 const App = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleSongEnd = () => {
+    const randomIndex = Math.floor(Math.random() * data.length);
+    setSelectedItem(data[randomIndex]);
+    document.title = data[randomIndex].original_name;
+  };
 
   return (
     <>
@@ -140,6 +152,7 @@ const App = () => {
             document.title = 'Arythm Lite';
             setSelectedItem(null);
           }}
+          onSongEnd={handleSongEnd} // Pass the song end handler
         />
       )}
     </>
