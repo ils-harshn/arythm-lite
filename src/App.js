@@ -33,7 +33,13 @@ const SelectedSongCard = ({ data, onClickClose, onSongEnd }) => {
     if (audioRef.current) {
       audioRef.current.volume = 0.1;
     }
-  }, [data]); // Adjust the volume when data changes (e.g., when a new song is selected)
+  }, []); // Adjust the volume when data changes (e.g., when a new song is selected)
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  }, [data]);
 
   return (
     <AnimatePresence>
