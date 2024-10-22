@@ -37,6 +37,7 @@ const SelectedSongCard = ({ data, onClickClose, onSongEnd }) => {
 
   useEffect(() => {
     if (audioRef.current) {
+      audioRef.current.src = `${API}stream/song/${data.url}`;
       audioRef.current.play();
     }
   }, [data]);
