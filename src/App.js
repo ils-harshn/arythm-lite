@@ -92,7 +92,7 @@ const SelectedSongCard = ({ data, onClickClose }) => {
 
             {/* Song controls */}
             <div className="mt-4">
-              <audio controls className="w-full" autoPlay>
+              <audio controls className="w-full" volume="0.2" autoPlay>
                 <source
                   src={`${API}stream/song/${data.url}`}
                   type="audio/mp3"
@@ -119,7 +119,7 @@ const App = () => {
             data={item}
             onClick={() => {
               setSelectedItem(item);
-              console.log(item.album.title);
+              document.title = item.original_name;
             }}
           />
         ))}
@@ -127,7 +127,10 @@ const App = () => {
       {selectedItem && (
         <SelectedSongCard
           data={selectedItem}
-          onClickClose={() => setSelectedItem(null)}
+          onClickClose={() => {
+            document.title = 'Arythm Lite';
+            setSelectedItem(null);
+          }}
         />
       )}
     </>
