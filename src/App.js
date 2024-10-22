@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
 import data from "./data";
 
 const API = "https://mongo-db-arsongs-api.onrender.com/";
