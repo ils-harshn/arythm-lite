@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import { useDebounce } from 'use-debounce';
 
 import data from "./data";
 
@@ -132,36 +133,42 @@ const SelectedSongCard = ({ data, onClickClose, onSongEnd }) => {
 const App = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [filters, setFilters] = useState({
-    original_name: "",
-    artist: "",
-    genre: "",
-    album: "",
-    year: ""
+    original_name: '',
+    artist: '',
+    genre: '',
+    album: '',
+    year: ''
   });
 
+  // Debounce filter values with a 300ms delay
+  const [debouncedOriginalName] = useDebounce(filters.original_name, 300);
+  const [debouncedArtist] = useDebounce(filters.artist, 300);
+  const [debouncedGenre] = useDebounce(filters.genre, 300);
+  const [debouncedAlbum] = useDebounce(filters.album, 300);
+  const [debouncedYear] = useDebounce(filters.year, 300);
+
+  // Handle when song ends and pick a random one
   const handleSongEnd = () => {
     const randomIndex = Math.floor(Math.random() * filteredData.length);
     setSelectedItem(filteredData[randomIndex]);
     document.title = filteredData[randomIndex].original_name;
   };
 
-  // Filtering the data array based on the filter values
-  const filteredData = data.filter((item) => {
+  // Filtering the data array based on the debounced filter values
+  const filteredData = data.filter(item => {
     const matchesOriginalName = item.original_name
       .toLowerCase()
-      .includes(filters.original_name.toLowerCase());
-    const matchesArtist = item.artists.some((artist) =>
-      artist.name.toLowerCase().includes(filters.artist.toLowerCase())
+      .includes(debouncedOriginalName.toLowerCase());
+    const matchesArtist = item.artists.some(artist =>
+      artist.name.toLowerCase().includes(debouncedArtist.toLowerCase())
     );
     const matchesGenre = item.genre.name
       .toLowerCase()
-      .includes(filters.genre.toLowerCase());
+      .includes(debouncedGenre.toLowerCase());
     const matchesAlbum = item.album.title
       .toLowerCase()
-      .includes(filters.album.toLowerCase());
-    const matchesYear = item.album.year
-      .toString()
-      .includes(filters.year);
+      .includes(debouncedAlbum.toLowerCase());
+    const matchesYear = item.album.year.toString().includes(debouncedYear);
 
     return (
       matchesOriginalName &&
@@ -172,6 +179,7 @@ const App = () => {
     );
   });
 
+  // Handle filter input change
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({
