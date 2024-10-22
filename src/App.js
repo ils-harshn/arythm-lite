@@ -129,8 +129,6 @@ const SelectedSongCard = ({ data, onClickClose, onSongEnd }) => {
   );
 };
 
-import { useState } from "react";
-
 const App = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [filters, setFilters] = useState({
