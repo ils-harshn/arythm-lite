@@ -129,19 +129,108 @@ const SelectedSongCard = ({ data, onClickClose, onSongEnd }) => {
   );
 };
 
+import { useState } from "react";
+
 const App = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [filters, setFilters] = useState({
+    original_name: "",
+    artist: "",
+    genre: "",
+    album: "",
+    year: ""
+  });
 
   const handleSongEnd = () => {
-    const randomIndex = Math.floor(Math.random() * data.length);
-    setSelectedItem(data[randomIndex]);
-    document.title = data[randomIndex].original_name;
+    const randomIndex = Math.floor(Math.random() * filteredData.length);
+    setSelectedItem(filteredData[randomIndex]);
+    document.title = filteredData[randomIndex].original_name;
+  };
+
+  // Filtering the data array based on the filter values
+  const filteredData = data.filter((item) => {
+    const matchesOriginalName = item.original_name
+      .toLowerCase()
+      .includes(filters.original_name.toLowerCase());
+    const matchesArtist = item.artists.some((artist) =>
+      artist.name.toLowerCase().includes(filters.artist.toLowerCase())
+    );
+    const matchesGenre = item.genre.name
+      .toLowerCase()
+      .includes(filters.genre.toLowerCase());
+    const matchesAlbum = item.album.title
+      .toLowerCase()
+      .includes(filters.album.toLowerCase());
+    const matchesYear = item.album.year
+      .toString()
+      .includes(filters.year);
+
+    return (
+      matchesOriginalName &&
+      matchesArtist &&
+      matchesGenre &&
+      matchesAlbum &&
+      matchesYear
+    );
+  });
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters({
+      ...filters,
+      [name]: value
+    });
   };
 
   return (
     <>
+      {/* Filter Bar */}
+      <div className="p-4 mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-100 rounded-md shadow-md">
+        <input
+          type="text"
+          name="original_name"
+          value={filters.original_name}
+          onChange={handleFilterChange}
+          placeholder="Filter by Song Title"
+          className="p-2 border border-gray-300 rounded-md"
+        />
+        <input
+          type="text"
+          name="artist"
+          value={filters.artist}
+          onChange={handleFilterChange}
+          placeholder="Filter by Artist"
+          className="p-2 border border-gray-300 rounded-md"
+        />
+        <input
+          type="text"
+          name="genre"
+          value={filters.genre}
+          onChange={handleFilterChange}
+          placeholder="Filter by Genre"
+          className="p-2 border border-gray-300 rounded-md"
+        />
+        <input
+          type="text"
+          name="album"
+          value={filters.album}
+          onChange={handleFilterChange}
+          placeholder="Filter by Album"
+          className="p-2 border border-gray-300 rounded-md"
+        />
+        <input
+          type="text"
+          name="year"
+          value={filters.year}
+          onChange={handleFilterChange}
+          placeholder="Filter by Year"
+          className="p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+
+      {/* Songs List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-        {data.map((item) => (
+        {filteredData.map((item) => (
           <SongCard
             key={item._id}
             data={item}
@@ -152,18 +241,20 @@ const App = () => {
           />
         ))}
       </div>
+
       {selectedItem && (
         <SelectedSongCard
           data={selectedItem}
           onClickClose={() => {
-            document.title = 'Arythm Lite';
+            document.title = "Arythm Lite";
             setSelectedItem(null);
           }}
-          onSongEnd={handleSongEnd} // Pass the song end handler
+          onSongEnd={handleSongEnd}
         />
       )}
     </>
   );
 };
+
 
 export default App;
