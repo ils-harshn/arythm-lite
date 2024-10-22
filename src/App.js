@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import data from "./data";
 
-const API = "https://evil-714859248413.us-central1.run.app/";
+const API = "https://mongo-db-arsongs-api.onrender.com/";
 
 const SongCard = ({ data, onClick, ...props }) => {
   return (
