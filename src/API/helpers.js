@@ -1,10 +1,14 @@
 import { BASE_URL } from ".";
 
+const USE_DIRECT_SRC = process.env.REACT_APP_USE_SRC_DIRECT_URL === "TRUE";
+
 export function get_image_url(path) {
+  if (USE_DIRECT_SRC) return `${process.src.REACT_APP_SRC_DIRECT_URL}${path}`;
   return `${BASE_URL}/stream/image/${path}`;
 }
 
 export function get_song_url(path) {
+  if (USE_DIRECT_SRC) return `${process.src.REACT_APP_SRC_DIRECT_URL}${path}`;
   return `${BASE_URL}/stream/song/${path}`;
 }
 
